@@ -1,4 +1,5 @@
-import { GAME_CREATED, SCORE_INPUT, PLAYER_CREATED } from "../constants/action-types";
+import { GAME_CREATED, GAME_FINISHED, SCORE_INPUT, PLAYER_CREATED } from "../constants/action-types";
+import newGameFrames  from "../constants/game-presets";
 
 /**
 * Action creators for user actions
@@ -7,11 +8,20 @@ import { GAME_CREATED, SCORE_INPUT, PLAYER_CREATED } from "../constants/action-t
 let previousPlayerID = 0;
 let previousGameID = 10;
 
-export function createGameForPlayer(playerID) {
+export function createGame(playerIDs) {
+    let newGameBatch = [];
     const gameID = previousGameID + 1;
-    const action = { type: GAME_CREATED, payload: { gameID, playerID } };
+    playerIDs.forEach(playerID => newGameBatch.push(
+        {id: gameID, isCurrent: true, isBeingViewed: true, playerID, frames: newGameFrames}  
+    ));
+
+    const action = { type: GAME_CREATED, payload: {newGameBatch} };
     previousGameID = gameID;
     return action;
+}
+
+export function finishGame (gameID) {
+    return { type: GAME_FINISHED, payload: {gameID: gameID}}
 }
 
 export function createPlayer(playerName) {
