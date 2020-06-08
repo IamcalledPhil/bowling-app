@@ -1,4 +1,4 @@
-import { GAME_CREATED, GAME_FINISHED, SCORE_INPUT, PLAYER_CREATED } from "../constants/action-types";
+import { GAME_CREATED, GAME_FINISHED, SCORE_INPUT, PLAYER_CREATED, START } from "../constants/action-types";
 import newGameFrames  from "../constants/game-presets";
 
 /**
@@ -6,7 +6,7 @@ import newGameFrames  from "../constants/game-presets";
 */
 
 let previousPlayerID = 0;
-let previousGameID = 10;
+let previousGameID = 0;
 
 export function createGame(playerIDs) {
     let newGameBatch = [];
@@ -29,6 +29,10 @@ export function createPlayer(playerName) {
     const action = { type: PLAYER_CREATED, payload: { playerID, playerName } };
     previousPlayerID = playerID;
     return action;
+}
+
+export function start () {
+    return { type: START }
 }
 
 export function inputScore(payload) {

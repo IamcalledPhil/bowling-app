@@ -1,20 +1,45 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { inputScore } from "../actions/index";
+import "../styles/Game.scss";
+import { Field, reduxForm } from 'redux-form'
 
+let ScoreForm = props => {
+  const { handleSubmit } = props;
+  return <form onSubmit={handleSubmit}>     
+    <label>
+      Enter score:
+      <Field name="score" component="input" type="number"/>
+    </label>
+    <input type="submit" value="Submit" />   
+  </form>
+}
+
+ScoreForm = reduxForm({
+  form: 'score'
+})(ScoreForm)
 
 const GameRow = props => {
-  console.log(props);
+  const dispatch = useDispatch();
 
   const frames = props.isViewedGameList.filter(game => game.playerID === props.player.id)[0].frames;
   console.log(frames);
   const playerFrames = [];
+
+  const handleSubmit = score => {
+    console.log(score);
+  }
+
   for (const frame of frames){
-    playerFrames.push(<td>
-      <div className="part-1">{frame.part1}</div>
-      <div className="part-2">{frame.part2}</div>
-      <div className="score">{frame.part1}</div>
-    </td>)
+    playerFrames.push (
+      frame.canEnterScore ?
+        <ScoreForm handleSubmit={handleSubmit} /> :
+        <td>
+          <div className="part-1">{frame.part1}</div>
+          <div className="part-2">{frame.part2}</div>
+          <div className="score">{frame.score}</div>
+        </td>
+    )
   }
 
   return (
@@ -49,12 +74,10 @@ export default () => {
   const playerList = useSelector(state => state.players.playerList);
   const gameList = useSelector(state => state.gameList.gameList);
   const isViewedGameList = gameList.filter(game => game.isBeingViewed );
-  const dispatch = useDispatch();
 
   return (
-    <section>
+    <section className="game-view">
       <PlayerGameDisplay playerList={playerList} isViewedGameList={isViewedGameList}/>
-      <button onClick={() => dispatch(inputScore())}>Input score</button>
     </section>
   );
 };

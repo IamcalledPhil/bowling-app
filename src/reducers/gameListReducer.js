@@ -14,19 +14,18 @@ import { GAME_CREATED, GAME_FINISHED, SCORE_INPUT } from "../constants/action-ty
 function gameListReducer(state = initialState, action) {
     if (action.type === GAME_CREATED) {
       return {...state, gameList: state.gameList.concat(action.payload.newGameBatch)}
-    } else if (action.type === GAME_FINISHED){
+    } 
+    else if (action.type === GAME_FINISHED){
       return state.gameList.map((game) => {
         if (game.id !== action.payload.gameID) {
-          // This isn't the item we care about - keep it as-is
           return game
         }
-        // Otherwise, this is the one we want - return an updated value
         return {
           ...game,
           ...{isCurrent: false}
         }
       })    }
-      else if  (action.type === SCORE_INPUT) {
+    else if  (action.type === SCORE_INPUT) {
         return state.gameList.filter((
           game => game.id === action.payload.gameID 
             && game.playerID === action.payload.playerID))

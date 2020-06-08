@@ -2,14 +2,14 @@ import { combineReducers } from 'redux';
 import playerListReducer from './playerListReducer';
 import gameListReducer from './gameListReducer';
 import animationScreenReducer from './animationScreenReducer';
-import gameFramesReducer from './gameFramesReducer';
+import { reducer as formReducer } from 'redux-form'
 
 
 const rootReducer = combineReducers({  
     players: playerListReducer,
     gameList: gameListReducer,
-    frames: gameFramesReducer,
-    animationScreen: animationScreenReducer
+    animationScreen: animationScreenReducer,
+    form: formReducer
 });
 
 export default rootReducer;

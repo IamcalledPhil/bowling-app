@@ -1,6 +1,9 @@
-import { PLAYER_CREATED } from "../constants/action-types";
+import { PLAYER_CREATED, START } from "../constants/action-types";
 
-  const initialState = {playerList: []};
+  const initialState = {
+    canCreateNewPlayers: true,
+    playerList: []
+  };
 
 /**
  * Sets the state for the list of players
@@ -11,10 +14,11 @@ import { PLAYER_CREATED } from "../constants/action-types";
  */
 function playerListReducer(state = initialState, action) {
     if (action.type === PLAYER_CREATED) {
-      return Object.assign({}, state, {
-        playerList: state.playerList.concat({id: action.payload.playerID, name: action.payload.playerName})
-      });
+        return {...state, playerList: state.playerList.concat({id: action.payload.playerID, name: action.payload.playerName})}
     } 
+    else if (action.type === START) {
+      return {...state, canCreateNewPlayers: false}
+    }
     return state;
   }
 
