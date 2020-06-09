@@ -1,0 +1,28 @@
+@import "_fonts";
+
+.main-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  button {
+    margin: 2em 3em;
+    display: inline-block;
+    padding: 0.5em 1.2em;
+    border-radius: .6em;
+    border: none;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-weight:400;
+    color:#FFFFFF;
+    background-color:#585858;
+    text-align:center;
+    transition: all 0.2s;
+  }
+
+  button:hover {
+    background-color:#bbbbbb;
+    color: #232323;
+    cursor: pointer;
+  }
+}

@@ -14,6 +14,7 @@ import { GAME_CREATED, GAME_FINISHED, SCORE_INPUT } from "../constants/action-ty
  */
 function gameListReducer(state = initialState, action) {
     if (action.type === GAME_CREATED) {
+      console.log(action.payload.gameID);
       return {...state, 
         ...{currentGameID: action.payload.gameID},
         gameList: {...state.gameList, [action.payload.gameID]: action.payload.newGameBatch}}

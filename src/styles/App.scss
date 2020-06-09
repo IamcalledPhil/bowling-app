@@ -1,0 +1,15 @@
+@import "_fonts";
+
+h1, h2, h3, h4, button, p {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  background-color: #232323;
+  color: white;
+}

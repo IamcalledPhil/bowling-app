@@ -15,7 +15,7 @@ export function createGame(playerIDs) {
         {id: gameID, isCurrent: true, isBeingViewed: true, playerID, frames: newGameFrames}  
     ));
 
-    const action = { type: GAME_CREATED, payload: {newGameBatch} };
+    const action = { type: GAME_CREATED, payload: {newGameBatch, gameID} };
     previousGameID = gameID;
     return action;
 }

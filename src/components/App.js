@@ -1,6 +1,7 @@
 import React from "react";
 import Game from "./Game";
 import Menu from "./Menu";
+import "../styles/App.scss";
 
 
 /**
@@ -9,7 +10,7 @@ import Menu from "./Menu";
 const App = () => {
     return (
         <main className="main-container">
-            <h1>hello world</h1>
+            <h1>Bowling score calculator</h1>
             <Menu/>
             <Game/>
             
