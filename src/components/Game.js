@@ -2,61 +2,62 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { inputScore } from "../actions/index";
 import "../styles/Game.scss";
-import { Field, reduxForm } from 'redux-form'
 
-let ScoreForm = props => {
-  const { handleSubmit } = props;
-  return <form onSubmit={handleSubmit}>     
+const ScoreForm = props => {
+  const dispatch = useDispatch();
+
+  return <form className={props.className}>     
     <label>
-      Enter score:
-      <Field name="score" component="input" type="number"/>
+      Pins:
+      <input name="score" 
+        onChange={event => dispatch(
+          inputScore({
+            score: event.target.value,
+            framePart: props.framePart,
+            gameID: props.gameID,
+            playerID: props.playerID,
+            index: props.frameIndex
+          })
+        )} 
+        value={props.frameValue}
+        type="number"/>
     </label>
-    <input type="submit" value="Submit" />   
   </form>
 }
 
-ScoreForm = reduxForm({
-  form: 'score'
-})(ScoreForm)
-
 const GameRow = props => {
-  const dispatch = useDispatch();
+  const gameList = useSelector(state => state.games.gameList);
 
-  const frames = props.isViewedGameList.filter(game => game.playerID === props.player.id)[0].frames;
-  console.log(frames);
-  const playerFrames = [];
+  const currentGame = gameList[props.currentGameID].filter(game => game.playerID === props.playerID)[0];
+  const currentFrames = currentGame.frames;
+  console.log(currentFrames);
+  const playerFrameViews = [];
 
-  const handleSubmit = score => {
-    console.log(score);
-  }
-
-  for (const frame of frames){
-    playerFrames.push (
-      frame.canEnterScore ?
-        <ScoreForm handleSubmit={handleSubmit} /> :
+  for (const frame of currentFrames){
+    playerFrameViews.push (
         <td>
-          <div className="part-1">{frame.part1}</div>
-          <div className="part-2">{frame.part2}</div>
+          <ScoreForm  className="part-1" framePart={1} frameValue={frame.part1} frameIndex={currentFrames.indexOf(frame)} playerID={props.playerID} gameID={currentGame.id}/> 
+          <ScoreForm  className="part-2" framePart={2} frameValue={frame.part2} frameIndex={currentFrames.indexOf(frame)} playerID={props.playerID} gameID={currentGame.id}/> 
           <div className="score">{frame.score}</div>
         </td>
     )
   }
 
   return (
-    <tr>{playerFrames}</tr>
+    <tr>{playerFrameViews}</tr>
   )
 }
 
 const PlayerGameDisplay = props => {
   let playerRows = [];
   // if there is a game, display it
-  if (props.isViewedGameList.length > 0){
+  if (props.isViewedGameList){
     for (const player of props.playerList){
-      playerRows.push(<GameRow player={player} isViewedGameList={props.isViewedGameList}/>)
+      playerRows.push(<GameRow playerID={player.id} isViewedGameList={props.isViewedGameList}/>)
     }
     return (
       <table>
-        <caption>Game {props.isViewedGameList[0].id}</caption>
+        <caption>Game {props.currentGameID}</caption>
         <tbody>
           {playerRows} 
         </tbody>
@@ -72,12 +73,11 @@ const PlayerGameDisplay = props => {
 
 export default () => {
   const playerList = useSelector(state => state.players.playerList);
-  const gameList = useSelector(state => state.gameList.gameList);
-  const isViewedGameList = gameList.filter(game => game.isBeingViewed );
+  const currentGameID = useSelector(state => state.games.currentGameID);
 
   return (
     <section className="game-view">
-      <PlayerGameDisplay playerList={playerList} isViewedGameList={isViewedGameList}/>
+      <PlayerGameDisplay playerList={playerList} currentGameID={currentGameID}/>
     </section>
   );
 };

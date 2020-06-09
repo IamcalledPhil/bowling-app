@@ -5,8 +5,8 @@ import { createGame, createPlayer, finishGame, start } from "../actions/index";
 export default  () => {
   const canCreateNewPlayers =  useSelector(state => state.players.canCreateNewPlayers);
   const playerIDs = useSelector(state => state.players.playerList).map(({ id }) => id);
-  const gameList = useSelector(state => state.gameList.gameList);
-  const currentGameID = gameList.filter(game => game.isCurrent).id;
+  const gameList = useSelector(state => state.games.gameList);
+  const currentGameID = useSelector(state => state.games.currentGameID);
   // get most recent game id, pass to creategameforplayer function to make possible having multiple players per game id
   const dispatch = useDispatch();
 
